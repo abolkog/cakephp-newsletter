@@ -17,8 +17,15 @@
 
 
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <h4 class="panel-title"><?= __('Subscribers [{0}]', $subscribers->count()) ?></h4>
+    <div class="panel-heading clearfix">
+        <h4 class="panel-title pull-left"><?= __('Subscribers [{0}]', $subscribers->count()) ?></h4>
+        <div class="btn-group pull-right">
+            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-gear"></i> <?= __('Actions') ?></button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><?= $this->Html->link("<i class='fa fa-plus'></i> ". __('Add Subscriber'), ['action'=>'addSubscriber', $group->id], ['escape'=>false]) ?></li>
+                <li><?= $this->Html->link("<i class='fa fa-refresh'></i> ".__('Import Subscribers'), ['action'=>'importSubscriber', $group->id], ['escape'=>false]) ?></li>
+            </ul>
+        </div>
     </div>
     <div class="panel-body">
 
