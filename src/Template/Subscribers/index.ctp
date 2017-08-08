@@ -5,7 +5,7 @@
     <div class="panel-heading clearfix">
         <h4 class="panel-title pull-left" style="padding-top: 7.5px;"></h4>
         <div class="btn-group pull-right">
-            <?= $this->Html->link(__('Add Subscriber'), ['action'=>'add'], ['class'=>'btn btn-default btn-sm'])  ?>
+            <?= $this->Html->link("<i class='fa fa-plus'></i> ".__('Add Subscriber'), ['action'=>'add'], ['class'=>'btn btn-default btn-sm','escape'=>false])  ?>
         </div>
     </div>
     <div class="panel-body">
@@ -35,11 +35,11 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="listActions">
-                            <li><?= $this->Html->link(__('View'),['action'=>'view',$subscriber->id]) ?></li>
-                            <li><?= $this->Html->link(__('Edit'),['action'=>'edit',$subscriber->id]) ?></li>
+                            <li><?= $this->Html->link("<i class='fa fa-eye'></i> ".__('View'),['action'=>'view',$subscriber->id],['escape'=>false]) ?></li>
+                            <li><?= $this->Html->link("<i class='fa fa-edit'></i> ".__('Edit'),['action'=>'edit',$subscriber->id],['escape'=>false]) ?></li>
                             <li role="separator" class="divider"></li>
                             <li>
-                                <?= $this->Form->postLink(__('Delete'),['action'=>'delete', $subscriber->id],['confirm'=>'Are you sure you want to delete this subscriber?']) ?>
+                                <?= $this->Form->postLink("<i class='fa fa-trash'></i> ".__('Delete'),['action'=>'delete', $subscriber->id],['confirm'=>'Are you sure you want to delete this subscriber?','escape'=>false]) ?>
                             </li>
                         </ul>
                     </div>

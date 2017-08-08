@@ -5,7 +5,7 @@
     <div class="panel-heading clearfix">
         <h4 class="panel-title pull-left" style="padding-top: 7.5px;"></h4>
         <div class="btn-group pull-right">
-            <?= $this->Html->link(__('New List'), ['action'=>'add'], ['class'=>'btn btn-default btn-sm'])  ?>
+            <?= $this->Html->link("<i class='fa fa-plus'></i> ".__('New List'), ['action'=>'add'], ['class'=>'btn btn-default btn-sm','escape'=>false])  ?>
         </div>
     </div>
     <div class="panel-body">
@@ -33,11 +33,11 @@
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="listActions">
-                                    <li><?= $this->Html->link(__('View'),['action'=>'view',$list->id]) ?></li>
-                                    <li><?= $this->Html->link(__('Edit'),['action'=>'edit',$list->id]) ?></li>
+                                    <li><?= $this->Html->link("<i class='fa fa-eye'></i> ".__('View'),['action'=>'view',$list->id],['escape'=>false]) ?></li>
+                                    <li><?= $this->Html->link("<i class='fa fa-edit'></i> ".__('Edit'),['action'=>'edit',$list->id],['escape'=>false]) ?></li>
                                     <li role="separator" class="divider"></li>
                                     <li>
-                                        <?= $this->Form->postLink(__('Delete'),['action'=>'delete', $list->id],['confirm'=>'Are you sure you want to delete this list?']) ?>
+                                        <?= $this->Form->postLink("<i class='fa fa-trash'></i> ".__('Delete'),['action'=>'delete', $list->id],['confirm'=>'Are you sure you want to delete this list?','escape'=>false]) ?>
                                     </li>
                                 </ul>
                             </div>

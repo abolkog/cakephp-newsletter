@@ -38,10 +38,14 @@ class GroupsController extends AppController
      */
     public function view($id = null)
     {
-        $group = $this->Groups->get($id, [
-            'contain' => ['Campaigns', 'Subscriptions']
+        $group = $this->Groups->get($id);
+
+        $subscribers = $this->Groups->Subscriptions->find('all',[
+            'conditions'=>['Subscriptions.group_id'=>$id],
+            'contain'=>['Subscribers']
         ]);
-        $this->set('group', $group);
+
+        $this->set(compact('group','subscribers'));
     }
 
     /**
@@ -106,5 +110,29 @@ class GroupsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    /**
+     * Remove Subscriber from list
+     */
+    public function removeFromList($subscriberId, $groupId){
+        $this->request->allowMethod(['post', 'delete']);
+        $subscription = $this->Groups->Subscriptions->find('all',[
+            'conditions'=>[
+                'AND'=>[
+                    'group_id'=>$groupId,
+                    'subscriber_id'=>$subscriberId
+                ]
+            ]
+        ])->first();
+
+
+        if ($this->Groups->Subscriptions->delete($subscription)) {
+            $this->Flash->success(__('Removed successfully'));
+        }else {
+            $this->Flash->error(__('An error occurred please try again'));
+        }
+
+        $this->redirect(['action'=>'view',$groupId]);
     }
 }
