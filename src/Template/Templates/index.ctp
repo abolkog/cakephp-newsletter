@@ -1,49 +1,54 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  * @var \App\Model\Entity\Newsletter.Template[]|\Cake\Collection\CollectionInterface $templates
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Template'), ['action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="templates index large-9 medium-8 columns content">
-    <h3><?= __('Templates') ?></h3>
-    <table cellpadding="0" cellspacing="0">
+<h1 class="page-header"><?= __('Templates') ?></h1>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <h4 class="panel-title pull-left" style="padding-top: 7.5px;"></h4>
+        <div class="btn-group pull-right">
+            <?= $this->Html->link("<i class='fa fa-plus'></i> ".__('Add Template'), ['action'=>'add'], ['class'=>'btn btn-default btn-sm','escape'=>false])  ?>
+        </div>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped"">
         <thead>
-            <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
+        <tr>
+            <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('name') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('created') ?></th>
+            <th scope="col" class="actions"><?= __('Actions') ?></th>
+        </tr>
         </thead>
         <tbody>
-            <?php foreach ($templates as $template): ?>
+        <?php foreach ($templates as $template) :?>
             <tr>
-                <td><?= $this->Number->format($template->id) ?></td>
-                <td><?= h($template->name) ?></td>
-                <td><?= h($template->created) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $template->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $template->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $template->id], ['confirm' => __('Are you sure you want to delete # {0}?', $template->id)]) ?>
+                <td><?= $template->id ?></td>
+                <td>
+                    <?= $this->Html->link($template->name, ['action'=>'view',$template->id]) ?>
+                </td>
+                <td><?= $template->created ?></td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="listActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <?= __('Actions') ?>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="listActions">
+                            <li><?= $this->Html->link("<i class='fa fa-eye'></i> ".__('View'),['action'=>'view',$template->id],['escape'=>false]) ?></li>
+                            <li><?= $this->Html->link("<i class='fa fa-edit'></i> ".__('Edit'),['action'=>'edit',$template->id],['escape'=>false]) ?></li>
+                            <li role="separator" class="divider"></li>
+                            <li>
+                                <?= $this->Form->postLink("<i class='fa fa-trash'></i> ".__('Delete'),['action'=>'delete', $template->id],['confirm'=>'Are you sure you want to delete this template?','escape'=>false]) ?>
+                            </li>
+                        </ul>
+                    </div>
                 </td>
             </tr>
-            <?php endforeach; ?>
+        <?php endforeach;?>
         </tbody>
-    </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
+
+        </table>
+    </div>
+    <div class="panel-footer">
+        <?= $this->element('paginator') ?>
     </div>
 </div>

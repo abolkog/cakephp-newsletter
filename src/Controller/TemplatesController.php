@@ -108,4 +108,15 @@ class TemplatesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+
+    /**
+     * Preview Template Design
+     * @param $id
+     */
+    public function preview($id) {
+        $this->viewBuilder()->setLayout('ajax');
+        $template = $this->Templates->get($id);
+        $this->set(compact('template'));
+    }
 }

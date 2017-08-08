@@ -14,6 +14,22 @@
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <!-- jQuery -->
+    <script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+
+    <!-- CKEditor-->
+    <script src="https://cdn.ckeditor.com/4.7.1/standard/ckeditor.js"></script>
+
+    <script>
+        $(function () {
+            $('.rich-editor').each(function(e){
+                CKEDITOR.replace(this.id, {
+                    customConfig: '/Newsletter/js/ckeditor_config.js'
+                });
+            });
+        });
+    </script>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
@@ -46,10 +62,6 @@
 
 </div>
 <!-- /.container -->
-
-<!-- jQuery -->
-<script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-
 
 
 <!-- Bootstrap Core JavaScript -->
