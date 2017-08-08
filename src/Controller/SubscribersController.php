@@ -34,13 +34,14 @@ class SubscribersController extends AppController
      */
     public function view($id = null)
     {
-        $subscriber = $this->Subscribers->get($id, [
-            'contain' => ['Subscriptions']
+        $subscriber = $this->Subscribers->get($id);
+        $lists = $this->Subscribers->Subscriptions->find('all',[
+            'conditions' => ['Subscriptions.subscriber_id' => $subscriber->id],
+            'contain'=> ['Groups'],
         ]);
 
+        $this->set(compact('subscriber','lists'));
 
-        $this->set('subscriber', $subscriber);
-        $this->set('_serialize', ['subscriber']);
     }
 
     /**
@@ -107,5 +108,79 @@ class SubscribersController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    /**
+     *
+     * Add a subscriber to a Mailing list
+     * @param null $id Subscriber Id
+     */
+    public function addToList($id = null) {
+        $subscriber = $this->Subscribers->get($id);
+        if(!$subscriber) {
+            $this->Flash->error(__('Invalid Subscriber Id'));
+            return $this->redirect(['action'=>'index']);
+        }
+
+        $subscription = $this->Subscribers->Subscriptions->newEntity();
+        $subscription->subscriber_id = $subscriber->id;
+        if($this->request->is('post')) {
+            $selectedMailingListId = $this->request->getData('group_id');
+            if(!$this->_alreadySubscribed($subscriber->id, $selectedMailingListId)) {
+                $subscription = $this->Subscribers->Subscriptions->patchEntity($subscription, $this->request->getData());
+                if($this->Subscribers->Subscriptions->save($subscription)) {
+                    $this->Flash->success("$subscriber->name has been added to the mailing list");
+                    return $this->redirect(['action'=>'view', $subscriber->id]);
+                }else {
+                    $this->Flash->error(__('An error occurred please try again'));
+                }
+            }else{
+                $this->Flash->error(__('This user already a member of the selected mailing list'));
+            }
+        }
+
+        $groups = $this->Subscribers->Subscriptions->Groups->find('list');
+        $this->set(compact('groups','subscriber','subscription'));
+    }
+
+    /**
+     * Remove Subscriber from list
+     */
+    public function removeFromList($subscriberId, $newsLetterId){
+        $this->request->allowMethod(['post', 'delete']);
+        $subscription = $this->Subscribers->Subscriptions->find('all',[
+            'conditions'=>[
+                'AND'=>[
+                    'group_id'=>$newsLetterId,
+                    'subscriber_id'=>$subscriberId
+                ]
+            ]
+        ])->first();
+
+
+        if ($this->Subscribers->Subscriptions->delete($subscription)) {
+            $this->Flash->success(__('Removed successfully'));
+        }else {
+            $this->Flash->error(__('An error occurred please try again'));
+        }
+
+        $this->redirect(['action'=>'view',$subscriberId]);
+    }
+
+    /**
+     * Check if the User already a member of the selected mailing list
+     * @param $userId subscriber Id
+     * @param $listId mailing list id
+     * @return bool true if already subscribed, false otherwise
+     */
+    private function _alreadySubscribed($userId, $listId) {
+        return $this->Subscribers->Subscriptions->find('all',[
+                'conditions'=>[
+                    'AND'=>[
+                        'subscriber_id'=>$userId,
+                        'group_id'=>$listId
+                    ]
+                ]
+            ])->first() != null;
     }
 }
