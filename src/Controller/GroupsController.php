@@ -7,11 +7,16 @@ use Newsletter\Controller\AppController;
  * Groups Controller
  *
  * @property \newsletter\Model\Table\GroupsTable $Groups
- *
- * @method \newsletter\Model\Entity\Group[] paginate($object = null, array $settings = [])
+
  */
 class GroupsController extends AppController
 {
+
+    public function initialize()
+    {
+        parent::initialize();
+        $this->Paginator->setConfig(['limit'=>10]);
+    }
 
     /**
      * Index method
@@ -21,9 +26,7 @@ class GroupsController extends AppController
     public function index()
     {
         $groups = $this->paginate($this->Groups);
-
         $this->set(compact('groups'));
-        $this->set('_serialize', ['groups']);
     }
 
     /**
@@ -38,9 +41,7 @@ class GroupsController extends AppController
         $group = $this->Groups->get($id, [
             'contain' => ['Campaigns', 'Subscriptions']
         ]);
-
         $this->set('group', $group);
-        $this->set('_serialize', ['group']);
     }
 
     /**
@@ -54,14 +55,13 @@ class GroupsController extends AppController
         if ($this->request->is('post')) {
             $group = $this->Groups->patchEntity($group, $this->request->getData());
             if ($this->Groups->save($group)) {
-                $this->Flash->success(__('The group has been saved.'));
+                $this->Flash->success(__('The mailing list has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The group could not be saved. Please, try again.'));
+            $this->Flash->error(__('The mailing list could not be saved. Please, try again.'));
         }
         $this->set(compact('group'));
-        $this->set('_serialize', ['group']);
     }
 
     /**
@@ -79,14 +79,13 @@ class GroupsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $group = $this->Groups->patchEntity($group, $this->request->getData());
             if ($this->Groups->save($group)) {
-                $this->Flash->success(__('The group has been saved.'));
+                $this->Flash->success(__('The mailing list has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The group could not be saved. Please, try again.'));
+            $this->Flash->error(__('The mailing list could not be saved. Please, try again.'));
         }
         $this->set(compact('group'));
-        $this->set('_serialize', ['group']);
     }
 
     /**
@@ -101,9 +100,9 @@ class GroupsController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $group = $this->Groups->get($id);
         if ($this->Groups->delete($group)) {
-            $this->Flash->success(__('The group has been deleted.'));
+            $this->Flash->success(__('The mailing list has been deleted.'));
         } else {
-            $this->Flash->error(__('The group could not be deleted. Please, try again.'));
+            $this->Flash->error(__('The mailing list could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);

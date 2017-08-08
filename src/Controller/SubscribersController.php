@@ -8,7 +8,6 @@ use Newsletter\Controller\AppController;
  *
  * @property \newsletter\Model\Table\SubscribersTable $Subscribers
  *
- * @method \newsletter\Model\Entity\Subscriber[] paginate($object = null, array $settings = [])
  */
 class SubscribersController extends AppController
 {
@@ -38,6 +37,7 @@ class SubscribersController extends AppController
         $subscriber = $this->Subscribers->get($id, [
             'contain' => ['Subscriptions']
         ]);
+
 
         $this->set('subscriber', $subscriber);
         $this->set('_serialize', ['subscriber']);

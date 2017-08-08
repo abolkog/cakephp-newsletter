@@ -1,49 +1,54 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  * @var \App\Model\Entity\Newsletter.Group[]|\Cake\Collection\CollectionInterface $groups
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Group'), ['action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="groups index large-9 medium-8 columns content">
-    <h3><?= __('Groups') ?></h3>
-    <table cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('title') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($groups as $group): ?>
-            <tr>
-                <td><?= $this->Number->format($group->id) ?></td>
-                <td><?= h($group->title) ?></td>
-                <td><?= h($group->created) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $group->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $group->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $group->id], ['confirm' => __('Are you sure you want to delete # {0}?', $group->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
+<h1 class="page-header"><?= __('Mailing Lists') ?></h1>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <h4 class="panel-title pull-left" style="padding-top: 7.5px;"></h4>
+        <div class="btn-group pull-right">
+            <?= $this->Html->link(__('New List'), ['action'=>'add'], ['class'=>'btn btn-default btn-sm'])  ?>
+        </div>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped"">
+            <thead>
+                <tr>
+                    <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('title') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('created') ?></th>
+                    <th scope="col" class="actions"><?= __('Actions') ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($groups as $list) :?>
+                    <tr>
+                        <td><?= $list->id ?></td>
+                        <td>
+                            <?= $this->Html->link($list->title, ['action'=>'view',$list->id]) ?>
+                        </td>
+                        <td><?= $list->created ?></td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="listActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <?= __('Actions') ?>
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="listActions">
+                                    <li><?= $this->Html->link(__('View'),['action'=>'view',$list->id]) ?></li>
+                                    <li><?= $this->Html->link(__('Edit'),['action'=>'edit',$list->id]) ?></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                        <?= $this->Form->postLink(__('Delete'),['action'=>'delete', $list->id],['confirm'=>'Are you sure you want to delete this list?']) ?>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach;?>
+            </tbody>
+
+        </table>
+    </div>
+    <div class="panel-footer">
+        <?= $this->element('paginator') ?>
     </div>
 </div>
