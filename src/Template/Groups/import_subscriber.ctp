@@ -25,7 +25,7 @@
         <div class="form-group">
             <?= $this->Form->control('listfile', ['class'=>'form-control','label'=>'Select File','type'=>'file','required']) ?>
         </div>
-        <?= $this->Form->button(__('Submit')) ?>
+        <?= $this->Form->button(__('Submit'),['class'=>'btn btn-primary pbtn']) ?>
         <?= $this->Form->end() ?>
     </div>
 

@@ -14,7 +14,7 @@
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <?= $this->Html->css('Newsletter.jquery.steps') ?>
+    <?= $this->Html->css('Newsletter.custom') ?>
     <!-- jQuery -->
     <script  src="http://code.jquery.com/jquery-3.2.1.min.js"  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="  crossorigin="anonymous"></script>
 
@@ -64,5 +64,14 @@
 <!-- Scripts in views -->
 <?= $this->fetch('scriptBottom'); ?>
 
+<script>
+    $(function () {
+        $('form').submit(function(){
+            $('.pbtn').prop('disabled',true);
+            $('.pbtn').html("<i class='fa fa-spinner fa-spin'></i>");
+        });
+
+    });
+</script>
 </body>
 </html>

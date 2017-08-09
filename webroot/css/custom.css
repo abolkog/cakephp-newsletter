@@ -380,3 +380,112 @@
 {
     display: list-item;
 }
+
+
+
+/*Badges and Labels
+------------------------------------*/
+.badge,
+.label {
+    border-radius: 0;
+}
+
+/*Labels*/
+span.label {
+    font-size: 11px;
+    font-weight: 400;
+    padding: 4px 7px;
+}
+
+/*Badges*/
+span.badge,
+.list-group-item.active>.badge {
+    color: #fff;
+    font-weight: 400;
+    padding: 4px 7px;
+}
+
+span.label-u,
+span.badge-u,
+.list-group-item.active>.badge.badge-u {
+    background: #72c02c;
+}
+
+span.label-blue,
+span.badge-blue,
+.list-group-item.active>.badge {
+    background: #3498db;
+}
+
+span.label-red,
+span.badge-red,
+.list-group-item.active>.badge {
+    background: #e74c3c;
+}
+
+span.label-green,
+span.badge-green,
+.list-group-item.active>.badge.badge-green {
+    background: #2ecc71;
+}
+
+span.label-sea,
+span.badge-sea,
+.list-group-item.active>.badge.badge-sea {
+    background: #1abc9c;
+}
+
+span.label-orange,
+span.badge-orange,
+.list-group-item.active>.badge.badge-orange {
+    background: #e67e22;
+}
+
+span.label-yellow,
+span.badge-yellow,
+.list-group-item.active>.badge.badge-yellow {
+    background: #f1c40f;
+}
+
+span.label-purple,
+span.badge-purple,
+.list-group-item.active>.badge.badge-purple {
+    background: #9b6bcc;
+}
+
+span.label-aqua,
+span.badge-aqua,
+.list-group-item.active>.badge.badge-aqua {
+    background: #27d7e7;
+}
+
+span.label-brown,
+span.badge-brown,
+.list-group-item.active>.badge.badge-brown {
+    background: #9c8061;
+}
+
+span.label-dark-blue,
+span.badge-dark-blue,
+.list-group-item.active>.badge.badge-dark-blue {
+    background: #4765a0;
+}
+
+span.label-light-green,
+span.badge-light-green,
+.list-group-item.active>.badge.badge-light-green {
+    background: #79d5b3;
+}
+
+span.label-light,
+span.badge-light,
+.list-group-item.active>.badge.badge-light {
+    color: #777;
+    background: #ecf0f1;
+}
+
+span.label-dark,
+span.badge-dark,
+.list-group-item.active>.badge.badge-dark {
+    background: #555;
+}

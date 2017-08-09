@@ -12,7 +12,7 @@
         <div class="form-group">
             <?= $this->Form->control('group_id', ['label'=>'Select Mailing List','class'=>'form-control']) ?>
         </div>
-        <?= $this->Form->button(__('Submit')) ?>
+        <?= $this->Form->button(__('Submit'),['class'=>'btn btn-primary pbtn']) ?>
         <?= $this->Form->end() ?>
     </div>
 

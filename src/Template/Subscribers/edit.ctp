@@ -13,7 +13,7 @@
         <div class="form-group">
             <?= $this->Form->control('email', ['class'=>'form-control','placeholder'=>__('Subscriber email')]) ?>
         </div>
-        <?= $this->Form->button(__('Submit')) ?>
+        <?= $this->Form->button(__('Submit'),['class'=>'btn btn-primary pbtn']) ?>
         <?= $this->Form->end() ?>
     </div>
 

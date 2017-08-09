@@ -18,7 +18,7 @@
         <div class="form-group">
             <?= $this->Form->control('body', ['class'=>'form-control','placeholder'=>__('Template body')]) ?>
         </div>
-        <?= $this->Form->button(__('Submit')) ?>
+        <?= $this->Form->button(__('Submit'), ['class'=>'btn btn-primary pbtn']) ?>
         <?= $this->Form->end() ?>
     </div>
 

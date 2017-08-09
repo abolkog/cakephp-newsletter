@@ -42,8 +42,10 @@ class CampaignsController extends AppController
             'contain' => ['Groups', 'Templates']
         ]);
 
-        $this->set('campaign', $campaign);
-        $this->set('_serialize', ['campaign']);
+        if ($this->request->is('post')) {
+            $this->_startCampaign($id);
+        }
+        $this->set(compact('campaign'));
     }
 
     /**
@@ -136,6 +138,87 @@ class CampaignsController extends AppController
             $this->Flash->error(__('Error cloning the campaign'));
         }
         return $this->redirect(['action'=>'index']);
+    }
 
+    /**
+     * Preview Template Design
+     * @param $id
+     */
+    public function preview($id) {
+        $this->viewBuilder()->setLayout('ajax');
+        $campaign = $this->Campaigns->get($id, [
+            'contain' => ['Templates']
+        ]);
+        $contents = null;
+        if($campaign->template) {
+            $contents = str_ireplace("%contents%",$campaign->contents, $campaign->template->body);
+        } else {
+            $contents = $campaign->contents;
+        }
+        $this->set('contents', $contents);
+    }
+
+
+    private function _startCampaign($id = null) {
+        $campaign = $this->Campaigns->get($id, [
+            'contain' => ['Templates']
+        ]);
+
+        if(!$campaign) {
+            $this->Flash->error('Invalid Campaign');
+            return $this->redirect(['action'=>'index']);
+        }
+
+        if($campaign->status > 1 ) {
+            $this->Flash->error('Campaign is already on going or completed');
+            return $this->redirect(['action'=>'index']);
+        }
+
+        $subscribers = $this->_getSubsribersData($campaign->group_id);
+
+        if ($subscribers->count() == 0 ) {
+            $this->Flash->error('NewsLetter has 0 subsribers');
+            return $this->redirect(['action'=>'index']);
+        }
+
+        $contents = null;
+        if($campaign->template) {
+            $contents = str_ireplace("%contents%",$campaign->contents, $campaign->template->body);
+        } else {
+            $contents = $campaign->contents;
+        }
+
+
+        $this->loadModel('Messages');
+        foreach ($subscribers as $subscriber) {
+            $message = $this->Messages->newEntity();
+            $message->sender = $campaign->sender;
+            $message->email = $subscriber->subscriber->email;
+            $message->subject = $campaign->subject;
+            $message->contents = $contents;
+            $message->attempts = 0;
+            $message->send = false;
+            $message->campaign_id = $campaign->id;
+            $this->Messages->save($message);
+        }
+
+
+        $campaign->status = 2;
+        $this->Campaigns->save($campaign);
+
+        $this->Flash->success('Campaign has started successfully ....');
+        $this->redirect(['action'=>'view', $campaign->id]);
+
+
+
+    }
+
+    private function _getSubsribersData($newsLetterId) {
+        $subscribers = $this->Campaigns->Groups->Subscriptions->find('all',[
+            'conditions'=>['Subscriptions.group_id'=>$newsLetterId],
+            'contain'=>['Subscribers']
+        ]);
+
+        return $subscribers;
     }
 }

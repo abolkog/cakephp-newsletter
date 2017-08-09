@@ -1,60 +1,96 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  * @var \App\Model\Entity\Newsletter.Campaign $campaign
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Campaign'), ['action' => 'edit', $campaign->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Campaign'), ['action' => 'delete', $campaign->id], ['confirm' => __('Are you sure you want to delete # {0}?', $campaign->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Campaigns'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Campaign'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Groups'), ['controller' => 'Groups', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Group'), ['controller' => 'Groups', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Templates'), ['controller' => 'Templates', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Template'), ['controller' => 'Templates', 'action' => 'add']) ?> </li>
-    </ul>
-</nav>
-<div class="campaigns view large-9 medium-8 columns content">
-    <h3><?= h($campaign->id) ?></h3>
-    <table class="vertical-table">
+<h1 class="page-header"><?= __('View Campaign') ?></h1>
+
+<table class="table table-striped"">
+    <thead>
         <tr>
-            <th scope="row"><?= __('Subject') ?></th>
-            <td><?= h($campaign->subject) ?></td>
+            <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('subject') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('From') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('group_id','Mailing List') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('template_id','Template') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('status') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('created', 'Created On') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('completed', 'Completed On') ?></th>
         </tr>
+    </thead>
+    <tbody>
         <tr>
-            <th scope="row"><?= __('Sender') ?></th>
-            <td><?= h($campaign->sender) ?></td>
+            <td><?= $campaign->id ?></td>
+
+            <td>
+                <?= $this->Html->link($campaign->subject, ['action'=>'view',$campaign->id]) ?>
+            </td>
+
+            <td><?= $campaign->sender ?></td>
+
+            <td><?= $this->Html->link($campaign->group->title , ['controller'=>'groups','action'=>'view',$campaign->group->id])?></td>
+
+            <td><?= $campaign->template_id == 0 ? __("None") :
+                    $this->Html->link($campaign->template->name,['controller'=>'templates','action'=>'view',$campaign->template->id])  ?></td>
+
+            <td>
+                <?php $status = $this->App->campaignStatusToString($campaign->status) ?>
+                <span class="badge  badge-<?= $status['color'] ?>"><?= $status['status'] ?></span>
+            </td>
+
+            <td><?= $campaign->created ?></td>
+
+            <td><?= $campaign->completed ?></td>
         </tr>
-        <tr>
-            <th scope="row"><?= __('Group') ?></th>
-            <td><?= $campaign->has('group') ? $this->Html->link($campaign->group->title, ['controller' => 'Groups', 'action' => 'view', $campaign->group->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Template') ?></th>
-            <td><?= $campaign->has('template') ? $this->Html->link($campaign->template->name, ['controller' => 'Templates', 'action' => 'view', $campaign->template->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($campaign->id) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Status') ?></th>
-            <td><?= $this->Number->format($campaign->status) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Created') ?></th>
-            <td><?= h($campaign->created) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Completed') ?></th>
-            <td><?= h($campaign->completed) ?></td>
-        </tr>
-    </table>
-    <div class="row">
-        <h4><?= __('Contents') ?></h4>
-        <?= $this->Text->autoParagraph(h($campaign->contents)); ?>
+    </tbody>
+</table>
+
+<div class="panel-default panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <i class="fa fa-file-code-o"></i> <?= __('Contents');?>
+        </h3>
+    </div>
+    <div class="panel-body">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a data-toggle="tab" href="#contentHtml">HTML</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#contentSource">Source</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#contentPreview">Preview</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="contentHtml" class="tab-pane fade in active padding-top-5">
+                <?= $campaign->contents; ?>
+            </div>
+            <div id="contentSource" class="tab-pane fade padding-top-5">
+                <?= $this->Text->autoParagraph(h($campaign->contents)); ?>
+            </div>
+            <div id="contentPreview" class="tab-pane fade padding-top-5">
+                <?= $this->Html->link("<i class='fa fa-eye'></i> ".__('Preview'), ['action'=>'preview',$campaign->id], ['class'=>'btn btn-info','escape'=>false,'target'=>'_blank','onclick'=>"return !window.open(this.href, 'Preview', 'width=800,height=600')"]) ?>
+            </div>
+        </div>
     </div>
 </div>
+
+
+<?php if($campaign->status == 1 ):?>
+<div class="panel panel-info">
+    <div class="panel-heading clearfix">
+        <h3 class="panel-title pull-left"><i class="fa fa-gear"></i> Start Sending</h3>
+    </div>
+    <div class="panel-body">
+        <div class="alert alert-warning">
+            <p><i class="fa fa-warning"></i>
+                <?= __('Campaign cannot be modified once you started it. If you want to make some changes do them now and then come back here to start sending the campaign')?>
+            </p>
+        </div>
+        <div class="pull-right">
+            <?= $this->Form->create(null, ['id'=>'startCampain']) ?>
+            <button type="submit"  id="startCampaignBtn" class="btn btn-primary pbtn">
+                <i class='fa fa-check'></i> <?=__('Start The Campaign')?>
+            </button>
+            <?= $this->Form->end(); ?>
+        </div>
+    </div>
+</div>
+<?php endif;?>

@@ -13,7 +13,7 @@
         <div class="form-group">
             <?= $this->Form->control('description', ['class'=>'form-control','placeholder'=>__('Mailing List Description')]) ?>
         </div>
-        <?= $this->Form->button(__('Submit')) ?>
+        <?= $this->Form->button(__('Submit'),['class'=>'btn btn-primary pbtn']) ?>
         <?= $this->Form->end() ?>
     </div>
 
