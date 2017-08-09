@@ -11,5 +11,6 @@ class AppController extends BaseController
     {
         parent::initialize();
         $this->loadComponent('Paginator');
+
     }
 }

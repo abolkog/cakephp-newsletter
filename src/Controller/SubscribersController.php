@@ -12,6 +12,30 @@ use Newsletter\Controller\AppController;
 class SubscribersController extends AppController
 {
 
+
+
+    /**
+     * Handles the Subscriber form (Subscriber Widget)
+     */
+    public function subscribe()
+    {
+        $this->request->allowMethod(['post']);
+        $subscriber = $this->Subscribers->newEntity();
+        $subscriber = $this->Subscribers->patchEntity($subscriber, $this->request->getData());
+        if($this->Subscribers->save($subscriber)) {
+            $lists = $this->Subscribers->Subscriptions->Groups->find('all');
+            foreach ($lists as $list) {
+                $this->_saveSubscriptions($list->id, $subscriber->id); // Assume Saved again
+            }
+            $this->Flash->success(__('Thank you, you have successfully subscibred to our mailing list'));
+        }else {
+            $this->Flash->success(__('Error, please try again'));
+        }
+
+        return $this->redirect(['controller'=>'pages','action'=>'display','plugin'=>false]);
+    }
+
+
     /**
      * Index method
      *
@@ -19,10 +43,10 @@ class SubscribersController extends AppController
      */
     public function index()
     {
-        $subscribers = $this->paginate($this->Subscribers);
-
-        $this->set(compact('subscribers'));
-        $this->set('_serialize', ['subscribers']);
+        $subscribers = $this->Subscribers->find('all',[
+            'order'=>['created DESC']
+        ]);
+        $this->set('subscribers', $this->Paginator->paginate($subscribers));
     }
 
     /**
@@ -41,7 +65,6 @@ class SubscribersController extends AppController
         ]);
 
         $this->set(compact('subscriber','lists'));
-
     }
 
     /**
@@ -62,7 +85,6 @@ class SubscribersController extends AppController
             $this->Flash->error(__('The subscriber could not be saved. Please, try again.'));
         }
         $this->set(compact('subscriber'));
-        $this->set('_serialize', ['subscriber']);
     }
 
     /**
@@ -74,9 +96,7 @@ class SubscribersController extends AppController
      */
     public function edit($id = null)
     {
-        $subscriber = $this->Subscribers->get($id, [
-            'contain' => []
-        ]);
+        $subscriber = $this->Subscribers->get($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $subscriber = $this->Subscribers->patchEntity($subscriber, $this->request->getData());
             if ($this->Subscribers->save($subscriber)) {
@@ -87,7 +107,6 @@ class SubscribersController extends AppController
             $this->Flash->error(__('The subscriber could not be saved. Please, try again.'));
         }
         $this->set(compact('subscriber'));
-        $this->set('_serialize', ['subscriber']);
     }
 
     /**
@@ -182,5 +201,12 @@ class SubscribersController extends AppController
                     ]
                 ]
             ])->first() != null;
+    }
+
+    private function _saveSubscriptions($groupId, $subscriberId) {
+        $subscription = $this->Subscribers->Subscriptions->newEntity();
+        $subscription->subscriber_id = $subscriberId;
+        $subscription->group_id = $groupId;
+        return $this->Subscribers->Subscriptions->save($subscription);
     }
 }
