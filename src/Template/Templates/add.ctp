@@ -10,6 +10,11 @@
         <div class="form-group">
             <?= $this->Form->control('name', ['class'=>'form-control','placeholder'=>__('Template name')]) ?>
         </div>
+
+        <div class="alert alert-info">
+            Use the placeholder <strong>%contents%</strong> in the template body where you want your contents to appear
+        </div>
+
         <div class="form-group">
             <?= $this->Form->control('body', ['class'=>'form-control','placeholder'=>__('Template body')]) ?>
         </div>

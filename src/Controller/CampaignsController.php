@@ -56,6 +56,7 @@ class CampaignsController extends AppController
         $campaign = $this->Campaigns->newEntity();
         if ($this->request->is('post')) {
             $campaign = $this->Campaigns->patchEntity($campaign, $this->request->getData());
+            $campaign->status = 1;
             if ($this->Campaigns->save($campaign)) {
                 $this->Flash->success(__('The campaign has been saved.'));
 
@@ -114,5 +115,27 @@ class CampaignsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function createClone($id = null){
+        $this->request->allowMethod(['post']);
+        $campaign = $this->Campaigns->get($id, ['contain'=>[]]);
+        if(!$campaign) {
+            $this->Flash->error(__('Invalid Link'));
+            return $this->redirect(['action'=>'index']);
+        }
+
+        $clone = $this->Campaigns->newEntity($campaign->toArray());;
+        $clone->subject = $clone->subject.' cloned';
+        $clone->status = 1;
+        $clone->completed = null;
+
+        if ($this->Campaigns->save($clone)) {
+            $this->Flash->success(__('The campaign was cloned successfully'));
+        }else{
+            $this->Flash->error(__('Error cloning the campaign'));
+        }
+        return $this->redirect(['action'=>'index']);
+
     }
 }

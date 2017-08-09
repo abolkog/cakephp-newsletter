@@ -14,26 +14,14 @@
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <?= $this->Html->css('Newsletter.jquery.steps') ?>
     <!-- jQuery -->
-    <script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script  src="http://code.jquery.com/jquery-3.2.1.min.js"  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="  crossorigin="anonymous"></script>
 
-
-    <!-- CKEditor-->
-    <script src="https://cdn.ckeditor.com/4.7.1/standard/ckeditor.js"></script>
-
-    <script>
-        $(function () {
-            $('.rich-editor').each(function(e){
-                CKEDITOR.replace(this.id, {
-                    customConfig: '/Newsletter/js/ckeditor_config.js'
-                });
-            });
-        });
-    </script>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
-    <?= $this->fetch('script') ?>
+
 </head>
 <body style="padding-top: 70px;">
 
@@ -68,13 +56,13 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
+<!-- Plugins -->
+<?= $this->Html->script('Newsletter.jquery.validate.min'); ?>
+<?= $this->Html->script('Newsletter.jquery.steps.min'); ?>
+<!-- Plugins -->
 
-<!-- Script to Activate the Carousel -->
-<script>
-    $('.carousel').carousel({
-        interval: 5000 //changes the speed
-    })
-</script>
+<!-- Scripts in views -->
+<?= $this->fetch('scriptBottom'); ?>
 
 </body>
 </html>

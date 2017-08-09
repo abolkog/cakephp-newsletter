@@ -74,7 +74,10 @@
                     <td><?= $campaign->id; ?></td>
                     <td><?= $this->Html->link($campaign->subject,['controller'=>'campaigns','action'=>'view',$campaign->id]) ?></td>
                     <td><?= $this->App->niceDate($campaign->created); ?></td>
-                    <td><span class="btn btn-info btn-sm"><?= $this->App->campaignStatusToString($campaign->status) ?></span></td>
+                    <td>
+                        <?php $status = $this->App->campaignStatusToString($campaign->status) ?>
+                        <span class="badge badge-<?= $status['color'] ?>"><?= $status['status'] ?></span>
+                    </td>
                 </tr>
             <?php endforeach;?>
             </tbody>

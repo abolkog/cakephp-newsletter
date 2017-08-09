@@ -1,63 +1,80 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  * @var \App\Model\Entity\Newsletter.Campaign[]|\Cake\Collection\CollectionInterface $campaigns
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Campaign'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Groups'), ['controller' => 'Groups', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Group'), ['controller' => 'Groups', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Templates'), ['controller' => 'Templates', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Template'), ['controller' => 'Templates', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="campaigns index large-9 medium-8 columns content">
-    <h3><?= __('Campaigns') ?></h3>
-    <table cellpadding="0" cellspacing="0">
+<h1 class="page-header"><?= __('Campaigns List') ?></h1>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <h4 class="panel-title pull-left" style="padding-top: 7.5px;"></h4>
+        <div class="btn-group pull-right">
+            <?= $this->Html->link("<i class='fa fa-plus'></i> ".__('New Campaign'), ['action'=>'add'], ['class'=>'btn btn-default btn-sm','escape'=>false])  ?>
+        </div>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped"">
         <thead>
-            <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('subject') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('sender') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('group_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('template_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('status') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('completed') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
+        <tr>
+            <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('subject') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('From') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('group_id','Mailing List') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('template_id','Template') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('status') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('created', 'Created On') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('completed', 'Completed On') ?></th>
+            <th scope="col" class="actions"><?= __('Actions') ?></th>
+        </tr>
         </thead>
         <tbody>
-            <?php foreach ($campaigns as $campaign): ?>
+        <?php foreach ($campaigns as $campaign) :?>
             <tr>
-                <td><?= $this->Number->format($campaign->id) ?></td>
-                <td><?= h($campaign->subject) ?></td>
-                <td><?= h($campaign->sender) ?></td>
-                <td><?= $campaign->has('group') ? $this->Html->link($campaign->group->title, ['controller' => 'Groups', 'action' => 'view', $campaign->group->id]) : '' ?></td>
-                <td><?= $campaign->has('template') ? $this->Html->link($campaign->template->name, ['controller' => 'Templates', 'action' => 'view', $campaign->template->id]) : '' ?></td>
-                <td><?= $this->Number->format($campaign->status) ?></td>
-                <td><?= h($campaign->created) ?></td>
-                <td><?= h($campaign->completed) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $campaign->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $campaign->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $campaign->id], ['confirm' => __('Are you sure you want to delete # {0}?', $campaign->id)]) ?>
+                <td><?= $campaign->id ?></td>
+
+                <td>
+                    <?= $this->Html->link($campaign->subject, ['action'=>'view',$campaign->id]) ?>
+                </td>
+
+                <td><?= $campaign->sender ?></td>
+
+                <td><?= $this->Html->link($campaign->group->title , ['controller'=>'groups','action'=>'view',$campaign->group->id])?></td>
+
+                <td><?= $campaign->template_id == 0 ? __("None") :
+                        $this->Html->link($campaign->template->name,['controller'=>'templates','action'=>'view',$campaign->template->id])  ?></td>
+
+                <td>
+                    <?php $status = $this->App->campaignStatusToString($campaign->status) ?>
+                    <span class="badge badge-<?= $status['color'] ?>"><?= $status['status'] ?></span>
+                </td>
+
+                <td><?= $campaign->created ?></td>
+
+                <td><?= $campaign->completed ?></td>
+
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="listActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <?= __('Actions') ?>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="listActions">
+                            <li><?= $this->Html->link("<i class='fa fa-eye'></i> ".__('View'),['action'=>'view',$campaign->id],['escape'=>false]) ?></li>
+                            <li><?= $this->Html->link("<i class='fa fa-edit'></i> ".__('Edit'),['action'=>'edit',$campaign->id],['escape'=>false]) ?></li>
+                            <li role="separator" class="divider"></li>
+                            <li>
+                                <?= $this->Form->postLink("<i class='fa fa-copy'></i> ".__('Clone'),['action'=>'createClone', $campaign->id],['confirm'=>'Are you sure you want to clone this list?','escape'=>false]) ?>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li>
+                                <?= $this->Form->postLink("<i class='fa fa-trash'></i> ".__('Delete'),['action'=>'delete', $campaign->id],['confirm'=>'Are you sure you want to delete this list?','escape'=>false]) ?>
+                            </li>
+                        </ul>
+                    </div>
                 </td>
             </tr>
-            <?php endforeach; ?>
+        <?php endforeach;?>
         </tbody>
-    </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
+
+        </table>
+    </div>
+    <div class="panel-footer">
+        <?= $this->element('paginator') ?>
     </div>
 </div>
