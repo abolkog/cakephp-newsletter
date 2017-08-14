@@ -204,6 +204,7 @@ class CampaignsController extends AppController
             $message->contents = $contents;
             $message->attempts = 0;
             $message->send = false;
+            $message->created = date('Y-m-d H:i:s');
             $message->campaign_id = $campaign->id;
             $this->Messages->save($message);
         }
