@@ -29,7 +29,11 @@ class SubscribersController extends AppController
             }
             $this->Flash->success(__('Thank you, you have successfully subscibred to our mailing list'));
         }else {
-            $this->Flash->success(__('Error, please try again'));
+            $email = $subscriber->getError('email');
+            if($email && $email['_isUnique']) {
+                $this->Flash->error(__('This Email is already registeted on our system'));
+            }else
+                $this->Flash->error(__('Error, please try again'));
         }
 
         return $this->redirect(['controller'=>'pages','action'=>'display','plugin'=>false]);
