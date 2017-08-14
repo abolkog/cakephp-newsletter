@@ -84,7 +84,13 @@ class CampaignsController extends AppController
         $campaign = $this->Campaigns->get($id, [
             'contain' => []
         ]);
+
+        if($campaign->status > 1) {
+            $this->Flash->error(__('You cannot edit a campaign while its being sent'));
+            return $this->redirect(['action'=>'index']);
+        }
         if ($this->request->is(['patch', 'post', 'put'])) {
+
             $campaign = $this->Campaigns->patchEntity($campaign, $this->request->getData());
             if ($this->Campaigns->save($campaign)) {
                 $this->Flash->success(__('The campaign has been saved.'));
@@ -192,7 +198,7 @@ class CampaignsController extends AppController
         $this->loadModel('Messages');
         foreach ($subscribers as $subscriber) {
             $message = $this->Messages->newEntity();
-            $message->sender = $campaign->sender;
+            $message->sender = $campaign->sender_email.','.$campaign->sender_name;
             $message->email = $subscriber->subscriber->email;
             $message->subject = $campaign->subject;
             $message->contents = $contents;

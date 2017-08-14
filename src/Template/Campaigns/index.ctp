@@ -14,7 +14,8 @@
         <tr>
             <th scope="col"><?= $this->Paginator->sort('id') ?></th>
             <th scope="col"><?= $this->Paginator->sort('subject') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('From') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('sender_name', 'From Name') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('sender_email', 'From Email') ?></th>
             <th scope="col"><?= $this->Paginator->sort('group_id','Mailing List') ?></th>
             <th scope="col"><?= $this->Paginator->sort('template_id','Template') ?></th>
             <th scope="col"><?= $this->Paginator->sort('status') ?></th>
@@ -32,7 +33,9 @@
                     <?= $this->Html->link($campaign->subject, ['action'=>'view',$campaign->id]) ?>
                 </td>
 
-                <td><?= $campaign->sender ?></td>
+                <td><?= $campaign->sender_name ?></td>
+
+                <td><?= $campaign->sender_email ?></td>
 
                 <td><?= $this->Html->link($campaign->group->title , ['controller'=>'groups','action'=>'view',$campaign->group->id])?></td>
 

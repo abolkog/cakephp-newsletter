@@ -15,8 +15,12 @@
                         <?= $this->Form->input('subject',['id'=>'subject','div'=>false,'label'=>false,'class'=>'form-control', 'placeholder'=>__('Campaign Title')]); ?>
                     </div>
                     <div class="form-group">
+                        <label><?= __('From Name')?></label>
+                        <?= $this->Form->input('sender_name',['id'=>'sender_name','div'=>false,'label'=>false,'class'=>'form-control', 'placeholder'=>__('ABC NewsLetter')]); ?>
+                    </div>
+                    <div class="form-group">
                         <label><?= __('From Address')?></label>
-                        <?= $this->Form->input('sender',['id'=>'sender','div'=>false,'label'=>false,'class'=>'form-control', 'placeholder'=>__('My Name <email@example.com>')]); ?>
+                        <?= $this->Form->input('sender_email',['id'=>'sender_email','div'=>false,'label'=>false,'class'=>'form-control', 'placeholder'=>__('email@example.com')]); ?>
                     </div>
                     <div class="form-group">
                         <label><?= __('Contents')?></label>

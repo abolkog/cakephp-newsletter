@@ -9,8 +9,8 @@ use Cake\Validation\Validator;
 /**
  * Campaigns Model
  *
- * @property \newsletter\Model\Table\GroupsTable|\Cake\ORM\Association\BelongsTo $Groups
- * @property \newsletter\Model\Table\TemplatesTable|\Cake\ORM\Association\BelongsTo $Templates
+ * @property \NewsLetter\Model\Table\GroupsTable|\Cake\ORM\Association\BelongsTo $Groups
+ * @property \NewsLetter\Model\Table\TemplatesTable|\Cake\ORM\Association\BelongsTo $Templates
  *
  * @method \newsletter\Model\Entity\Campaign get($primaryKey, $options = [])
  * @method \newsletter\Model\Entity\Campaign newEntity($data = null, array $options = [])
@@ -50,6 +50,8 @@ class CampaignsTable extends Table
             'foreignKey' => 'template_id',
             'className' => 'Newsletter.Templates'
         ]);
+
+        $this->hasMany('Messages', ['dependent'=>true]);
     }
 
     /**
@@ -100,5 +102,13 @@ class CampaignsTable extends Table
         $rules->add($rules->existsIn(['template_id'], 'Templates'));
 
         return $rules;
+    }
+
+    /**
+     * Mark Campaign as completed
+     * @param $id
+     */
+    public function completed($id) {
+        $this->updateAll(['status'=>3, 'completed'=> date('Y-m-d H:i:s') ], ['id'=>$id]);
     }
 }

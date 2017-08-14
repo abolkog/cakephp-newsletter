@@ -9,6 +9,8 @@ use Cake\Validation\Validator;
 /**
  * Messages Model
  *
+  @property \NewsLetter\Model\Table\CampaignsTable|\Cake\ORM\Association\BelongsTo $Campaigns
+ *
  * @method \newsletter\Model\Entity\Message get($primaryKey, $options = [])
  * @method \newsletter\Model\Entity\Message newEntity($data = null, array $options = [])
  * @method \newsletter\Model\Entity\Message[] newEntities(array $data, array $options = [])
@@ -37,6 +39,11 @@ class MessagesTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+
+        $this->belongsTo('Campaigns', [
+            'foreignKey' => 'campaign_id',
+            'className' => 'NewsLetter.Campaigns'
+        ]);
     }
 
     /**
@@ -93,5 +100,18 @@ class MessagesTable extends Table
         $rules->add($rules->isUnique(['email']));
 
         return $rules;
+    }
+
+    /**
+     * Mark the queue item as sent
+     * @param $id Queue Item Id (Mysql)
+     */
+    public function success($id) {
+        $this->updateAll(['sent'=>true], ['id'=>$id]);
+    }
+
+    public function fail($id, $attempts) {
+        $attempts++;
+        $this->updateAll(['sent'=>false, 'attempts'=>$attempts], ['id'=>$id]);
     }
 }

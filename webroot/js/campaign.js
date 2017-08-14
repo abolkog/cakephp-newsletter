@@ -13,7 +13,8 @@ $(document).ready(function () {
         },
         rules: {
             subject: { required: true },
-            sender: { required: true },
+            sender_email: { required: true, email: true },
+            sender_name: { required: true },
             contents: { required: true },
             group_id: {
                 required: {
@@ -25,7 +26,8 @@ $(document).ready(function () {
         },
         messages: {
             subject: "Please provide campaign subject. This will appear as the Email Subject",
-            sender: "Please provide campaign from value. This will appear as the Email sender name/email",
+            sender_name: "Please provide sender name. This will appear as the Email sender name/email",
+            sender_email: "Please provide email. This will appear as the Email sender name/email",
             contents: "Contents is a required field",
             group_id: "Please select a mailing list"
         }
