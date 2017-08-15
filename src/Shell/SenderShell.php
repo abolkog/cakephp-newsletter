@@ -92,6 +92,15 @@ class SenderShell extends Shell {
         }
     }
 
+    public function delete() {
+        $this->out('[Warning] This command will delete all emails regardless of the status (sent or no)');
+        $answer = readline("Do you want to continue? [y/n]");
+        if(strtolower($answer) == 'y') {
+            $this->Messages->deleteAll(['1 =1']);
+            $this->out('All emails has been deleted');
+        }
+    }
+
     /**
      * Process sending the email
      * @param $email

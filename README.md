@@ -1,6 +1,6 @@
 # Newsletter plugin for CakePHP
 
-This plugins adds a basic NewsLetter functionality to your CakePhp based application.
+This plugins adds a basic News Letter functionality to your CakePHP based application.
 
 ## Requirements
 
@@ -23,6 +23,7 @@ This plugins adds a basic NewsLetter functionality to your CakePhp based applica
 ## Usage
 
 ### Displaying the Subscribe Form
+
 * Load the **Newsletter component** in your controller
         
         $this->loadComponent('Newsletter.Newsletter');
