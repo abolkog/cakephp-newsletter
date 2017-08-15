@@ -75,6 +75,9 @@ in footer.ctp
 * To start Processing the email queue
 
         bin/cake newsletter.sender  run
+This run command will processs 50 emails per time. you can override it by passing the **limit** argument
+
+        bin/cake newsletter.sender run -l 100
 
 * To see all available commmands 
         
