@@ -168,7 +168,6 @@ class GroupsController extends AppController
         $this->redirect(['action'=>'view',$groupId]);
     }
 
-
     /**
      * Import Subscribers from file
      * @param $id
@@ -265,7 +264,7 @@ class GroupsController extends AppController
             $subscriber = $subscribersModel->newEntity();
             $subscriber->email = $email;
             $subscriber->name = $name;
-            $subscribersModel->save($subscriber); //Assume it is saved lol.
+            $subscribersModel->save($subscriber); //Assume it is saved.
             $result['new'] = true;
             $result['info'] = $subscriber;
         }
@@ -273,6 +272,13 @@ class GroupsController extends AppController
         return $result;
     }
 
+    /**
+     * Check to see if a user already subscribed to a miling list or no
+     *
+     * @param $userId the user id
+     * @param $listId the mailing list id
+     * @return bool
+     */
     private function _alreadySubscribed($userId, $listId) {
         return $this->Groups->Subscriptions->find('all',[
                 'conditions'=>[

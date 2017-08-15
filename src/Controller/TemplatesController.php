@@ -109,7 +109,6 @@ class TemplatesController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-
     /**
      * Preview Template Design
      * @param $id

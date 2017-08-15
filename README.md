@@ -8,7 +8,7 @@ This plugins adds a basic NewsLetter functionality to your CakePhp based applica
 
 ## Installation
 
-* Copy the files in this directory into yourapp/plugins/Newsletter
+        composer require abolkog/Newsletter
 
 * Enable the plugin within your config/bootstrap.php 
 

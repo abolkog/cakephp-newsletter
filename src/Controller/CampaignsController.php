@@ -7,9 +7,8 @@ use Newsletter\Controller\AppController;
  * Campaigns Controller
  *
  * @property \newsletter\Model\Table\CampaignsTable $Campaigns
- *
- * @method \newsletter\Model\Entity\Campaign[] paginate($object = null, array $settings = [])
  */
+
 class CampaignsController extends AppController
 {
 
@@ -164,7 +163,12 @@ class CampaignsController extends AppController
         $this->set('contents', $contents);
     }
 
-
+    /**
+     * Start The campaign and queue all the emails
+     *
+     * @param null $id the Campagin id
+     * @return \Cake\Http\Response|null
+     */
     private function _startCampaign($id = null) {
         $campaign = $this->Campaigns->get($id, [
             'contain' => ['Templates']
@@ -220,6 +224,12 @@ class CampaignsController extends AppController
 
     }
 
+    /**
+     * Get a mailing list subscribers
+     *
+     * @param $newsLetterId the mailing list id
+     * @return \Cake\ORM\Query
+     */
     private function _getSubsribersData($newsLetterId) {
         $subscribers = $this->Campaigns->Groups->Subscriptions->find('all',[
             'conditions'=>['Subscriptions.group_id'=>$newsLetterId],

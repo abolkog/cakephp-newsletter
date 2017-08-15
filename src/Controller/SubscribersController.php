@@ -134,8 +134,8 @@ class SubscribersController extends AppController
     }
 
     /**
-     *
      * Add a subscriber to a Mailing list
+     *
      * @param null $id Subscriber Id
      */
     public function addToList($id = null) {
@@ -207,6 +207,13 @@ class SubscribersController extends AppController
             ])->first() != null;
     }
 
+    /**
+     * Save Subscrition to the databsae
+     *
+     * @param $groupId mailing list id
+     * @param $subscriberId subscriber id
+     * @return bool|\Cake\Datasource\EntityInterface|mixed|\newsletter\Model\Entity\Subscription
+     */
     private function _saveSubscriptions($groupId, $subscriberId) {
         $subscription = $this->Subscribers->Subscriptions->newEntity();
         $subscription->subscriber_id = $subscriberId;

@@ -10,7 +10,6 @@ class NewsletterComponent extends Component {
 
     /**
      * The Controller that will attach this component to
-     * @var null
      */
     protected $_controller = null;
 
